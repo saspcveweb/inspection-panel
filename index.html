@@ -79,8 +79,8 @@ td,th{padding:1.5px 4px;font-size:11.5px;vertical-align:top;text-align:left;}
   <div><label>Inspection Date <span style="font-weight:normal;color:#888;">(auto, EST)</span></label><input id="inspDate" type="date"></div>
 </div>
 <div class="row3">
-  <div><label>Start Time</label><input id="startTime" placeholder="2:21 PM"></div>
-  <div><label>End Time</label><input id="endTime" placeholder="2:45 PM"></div>
+  <div><label>Start Time</label><input id="startTime" type="time"></div>
+  <div><label>End Time</label><input id="endTime" type="time"></div>
   <div><label>Level</label><select id="level"><option>I - Full</option><option selected>II - Walk-Around</option><option>III - Driver Only</option><option>V - Vehicle Only</option></select></div>
 </div>
 <div class="row2">
@@ -116,8 +116,35 @@ td,th{padding:1.5px 4px;font-size:11.5px;vertical-align:top;text-align:left;}
 <h2 style="margin-top:16px;">Vehicle Units</h2>
 <fieldset><legend>Unit 1</legend>
 <div class="row3">
-  <div><label>Type</label><input id="u1type" placeholder="TR"></div>
-  <div><label>Make</label><input id="u1make"></div>
+  <div><label>Type</label>
+    <select id="u1type">
+      <option value="">— Select —</option>
+      <option value="TR">TR – Truck Tractor</option>
+      <option value="TK">TK – Straight Truck</option>
+      <option value="ST">ST – Semi-Trailer</option>
+      <option value="FT">FT – Full Trailer</option>
+      <option value="DL">DL – Converter Dolly</option>
+      <option value="BUS">BUS – Bus</option>
+      <option value="MC">MC – Motorcoach</option>
+      <option value="PT">PT – Pole Trailer</option>
+      <option value="PC">PC – Passenger Car</option>
+      <option value="MH">MH – Motorhome</option>
+    </select>
+  </div>
+  <div><label>Make</label>
+    <select id="u1makeSel" onchange="toggleCustomMake(1)">
+      <option value="">— Select —</option>
+      <option>Peterbilt</option>
+      <option>Kenworth</option>
+      <option>Western Star</option>
+      <option>Ford</option>
+      <option>Chevy</option>
+      <option>GMC</option>
+      <option>BRUTE</option>
+      <option value="Custom">Custom…</option>
+    </select>
+    <input id="u1makeCustom" placeholder="Enter make" style="display:none;margin-top:4px;">
+  </div>
   <div><label>Year</label><input id="u1year"></div>
 </div>
 <div class="row2">
@@ -128,8 +155,35 @@ td,th{padding:1.5px 4px;font-size:11.5px;vertical-align:top;text-align:left;}
 </fieldset>
 <fieldset><legend>Unit 2 (trailer, optional)</legend>
 <div class="row3">
-  <div><label>Type</label><input id="u2type" placeholder="ST"></div>
-  <div><label>Make</label><input id="u2make"></div>
+  <div><label>Type</label>
+    <select id="u2type">
+      <option value="">— Select —</option>
+      <option value="TR">TR – Truck Tractor</option>
+      <option value="TK">TK – Straight Truck</option>
+      <option value="ST" selected>ST – Semi-Trailer</option>
+      <option value="FT">FT – Full Trailer</option>
+      <option value="DL">DL – Converter Dolly</option>
+      <option value="BUS">BUS – Bus</option>
+      <option value="MC">MC – Motorcoach</option>
+      <option value="PT">PT – Pole Trailer</option>
+      <option value="PC">PC – Passenger Car</option>
+      <option value="MH">MH – Motorhome</option>
+    </select>
+  </div>
+  <div><label>Make</label>
+    <select id="u2makeSel" onchange="toggleCustomMake(2)">
+      <option value="">— Select —</option>
+      <option>Peterbilt</option>
+      <option>Kenworth</option>
+      <option>Western Star</option>
+      <option>Ford</option>
+      <option>Chevy</option>
+      <option>GMC</option>
+      <option>BRUTE</option>
+      <option value="Custom">Custom…</option>
+    </select>
+    <input id="u2makeCustom" placeholder="Enter make" style="display:none;margin-top:4px;">
+  </div>
   <div><label>Year</label><input id="u2year"></div>
 </div>
 <div class="row2">
@@ -289,6 +343,33 @@ function updateVio(i,field,val){
 
 function esc(s){ return (s||'').toString(); }
 
+function toggleCustomMake(unit){
+  const sel = document.getElementById('u'+unit+'makeSel');
+  const custom = document.getElementById('u'+unit+'makeCustom');
+  if(sel.value === 'Custom'){
+    custom.style.display = 'block';
+  } else {
+    custom.style.display = 'none';
+    custom.value = '';
+  }
+}
+function getMake(unit){
+  const sel = document.getElementById('u'+unit+'makeSel');
+  if(sel.value === 'Custom') return esc(document.getElementById('u'+unit+'makeCustom').value);
+  return esc(sel.value);
+}
+
+function fmtTime(t){
+  if(!t) return '';
+  const [hStr,mStr] = t.split(':');
+  let h = parseInt(hStr,10);
+  const m = mStr;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12;
+  if(h === 0) h = 12;
+  return `${h}:${m} ${ampm}`;
+}
+
 function render(){
   const v = id=>esc(document.getElementById(id).value);
   const oosCount = violations.filter(x=>x.oos==='Y').length;
@@ -306,7 +387,7 @@ function render(){
       Inspection Date: <b>${v('inspDate')}</b>
     </div>
     <div class="metabox">
-      Start: ${v('startTime')} &nbsp; End: ${v('endTime')}<br>
+      Start: ${fmtTime(v('startTime'))} &nbsp; End: ${fmtTime(v('endTime'))}<br>
       Inspection Level: <b>${v('level')}</b><br>
       HM Inspection Type: ${v('hmType')}
     </div>
@@ -333,8 +414,8 @@ function render(){
   <div class="section-title">Vehicle Identification</div>
   <table>
     <tr><th>Unit</th><th>Type</th><th>Make</th><th>Year</th><th>Plate</th><th>VIN</th><th>GVWR</th></tr>
-    <tr><td>1</td><td>${v('u1type')}</td><td>${v('u1make')}</td><td>${v('u1year')}</td><td>${v('u1plate')}</td><td>${v('u1vin')}</td><td>${v('u1gvwr')}</td></tr>
-    ${v('u2type')||v('u2plate')?`<tr><td>2</td><td>${v('u2type')}</td><td>${v('u2make')}</td><td>${v('u2year')}</td><td>${v('u2plate')}</td><td>${v('u2vin')}</td><td>${v('u2gvwr')}</td></tr>`:''}
+    <tr><td>1</td><td>${v('u1type')}</td><td>${getMake(1)}</td><td>${v('u1year')}</td><td>${v('u1plate')}</td><td>${v('u1vin')}</td><td>${v('u1gvwr')}</td></tr>
+    ${v('u2type')||v('u2plate')?`<tr><td>2</td><td>${v('u2type')}</td><td>${getMake(2)}</td><td>${v('u2year')}</td><td>${v('u2plate')}</td><td>${v('u2vin')}</td><td>${v('u2gvwr')}</td></tr>`:''}
   </table>
   <div class="section-title">Violations ${violations.length?`(${violations.length} found, ${oosCount} Out-of-Service)`:'— None Discovered'}</div>
   ${violations.length?`
