@@ -56,7 +56,7 @@ td,th{padding:1.5px 4px;font-size:11.5px;vertical-align:top;text-align:left;}
 .sigline{border-top:1px solid #111;margin-top:4px;width:260px;display:inline-block;}
 @media print{
   body{background:#fff;padding:0;}
-  .panel,h1,.sub{display:none;}
+  .no-print,h1,.sub{display:none;}
   .wrap{display:block;}
   #report{box-shadow:none;border:none;}
 }
@@ -67,7 +67,7 @@ td,th{padding:1.5px 4px;font-size:11.5px;vertical-align:top;text-align:left;}
 <div class="sub">Driver/Vehicle Examination Report generator — fill in the fields, add violations, then print or save as PDF.</div>
 <div class="wrap">
 
-<div class="panel">
+<div class="panel no-print">
 <h2>Report Details</h2>
 <div class="row2">
   <div><label>Report # <span style="font-weight:normal;color:#888;">(auto)</span></label>
