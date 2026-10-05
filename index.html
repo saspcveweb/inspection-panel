@@ -302,64 +302,159 @@ input[readonly]{background:#eef0f3;font-family:Consolas,monospace;}
 // FMCSA / CVSA violation codes (49 CFR) — same list as the original generator.
 const VIO_GROUPS = {
 "Brakes": {
-  "393.47(a)":"Brakes out of adjustment beyond allowable limits",
-  "393.48(a)":"Inoperative or defective brake on required axle",
+  "393.40":"Inadequate brake system on a CMV",
+  "393.41":"No or defective parking brake system",
   "393.42":"Required service brakes not provided on all wheels",
-  "393.43(d)":"Missing or inoperable breakaway braking system on trailer/converter dolly",
-  "393.53(b)":"Antilock braking system (ABS) malfunction indicator inoperative"
+  "393.43(a)":"No or improper tractor protection valve",
+  "393.43(d)":"No or defective automatic (breakaway) trailer brake",
+  "393.45(b)(2)":"Brake hose or tubing chafing and/or kinking",
+  "393.45(d)":"Brake connections with leaks or constrictions",
+  "393.47(a)":"Inadequate brakes for safe stopping",
+  "393.47(d)":"Insufficient brake lining/pad thickness",
+  "393.47(e)":"Clamp or roto-chamber type brake(s) out of adjustment",
+  "393.48(a)":"Inoperative or defective brakes",
+  "393.50":"Inadequate reservoir for air/vacuum brakes",
+  "393.51":"No or defective brake warning device",
+  "393.53(b)":"Automatic brake adjuster missing or inoperative",
+  "393.55(e)":"ABS malfunction indicator lamp missing or inoperative"
 },
 "Lighting & Electrical": {
-  "393.9":"Inoperative required lamp (head/tail/stop/turn signal)",
-  "393.11":"Required lamp or reflector not mounted as required",
-  "393.28":"Wiring not properly insulated or protected"
+  "393.9(a)":"Inoperative required lamp",
+  "393.11":"No or defective lighting devices/reflective devices as required",
+  "393.13":"No or defective retroreflective sheeting / conspicuity treatment",
+  "393.19":"Inoperative or defective turn signal / hazard warning signal",
+  "393.24(b)":"Headlamps improperly aimed or obstructed",
+  "393.25(f)":"Stop lamp violations",
+  "393.26":"Required reflectors missing or defective",
+  "393.28":"Wiring not properly insulated or protected",
+  "393.30":"Battery not properly installed or secured"
 },
-"Tires & Wheels": {
-  "393.75(a)":"Tire flat or has an audible leak",
-  "393.75(b)":"Tire tread depth below minimum (steer <4/32\", other axles <2/32\")",
-  "393.75(c)":"Tire has cut/bulge exposing ply or belt material",
-  "393.75(h)":"Tire sizes/types mismatched on same axle",
-  "393.205":"Wheel with loose, missing, or damaged fasteners"
+"Tires": {
+  "393.75(a)(1)":"Tire - ply or belt material exposed through tread or sidewall",
+  "393.75(a)(2)":"Tire - tread and/or sidewall separation",
+  "393.75(a)(3)":"Tire - flat and/or audible air leak",
+  "393.75(a)(4)":"Tire - cut exposing ply and/or belt material",
+  "393.75(b)":"Tire - front tread depth less than 4/32 of an inch",
+  "393.75(c)":"Tire - other tread depth less than 2/32 of an inch",
+  "393.75(e)":"Tire - regrooved tire on front axle of truck/truck-tractor",
+  "393.75(f)":"Tire - weight carried exceeds tire load limit"
 },
-"Emergency Equipment": {
-  "393.95(a)(1)":"No fire extinguisher present or not properly rated/charged",
-  "393.95(f)":"Warning devices (triangles/flares) missing or improper"
+"Wheels, Frame & Body": {
+  "393.205(a)":"Wheel/rim cracked or broken",
+  "393.205(b)":"Wheel stud/bolt holes elongated or out of round",
+  "393.205(c)":"Wheel fasteners loose and/or missing",
+  "393.201(a)":"Frame cracked, loose, sagging or broken",
+  "393.203":"Cab/body components defective, loose or missing",
+  "393.84":"Floor condition violations (holes, openings)",
+  "393.86":"No or improper rear impact guard"
 },
 "Steering & Suspension": {
-  "393.209":"Steering system has excessive lash/play",
-  "393.207":"Suspension defect - broken spring, shifted axle, or missing U-bolt"
+  "393.209(a)":"Steering wheel not secured or broken",
+  "393.209(b)":"Steering wheel lash exceeds allowable limit",
+  "393.209(c)":"Steering column loose or not secure",
+  "393.209(d)":"Steering system components worn, welded or missing",
+  "393.209(e)":"Power steering violations",
+  "393.207(a)":"Axle positioning parts defective or missing",
+  "393.207(c)":"Leaf spring assembly defective or missing",
+  "393.207(f)":"Air suspension pressure loss or defective"
 },
 "Coupling Devices": {
-  "393.70(b)":"Fifth wheel not properly secured or mounted",
-  "393.71":"Safety chains/devices missing or inadequate on towed unit"
+  "393.70(a)":"Improper coupling of driveaway/towaway or combination",
+  "393.70(b)":"Fifth wheel defective, improperly mounted or not secured",
+  "393.70(d)":"No or improper safety chains/cables for full trailer",
+  "393.71":"Coupling devices and towing methods - driveaway/towaway violation"
+},
+"Cab, Glass & Driver Equipment": {
+  "393.60(c)":"Damaged or discolored windshield",
+  "393.60(e)":"Windshield obstructed (decals, stickers, devices)",
+  "393.78":"Windshield wipers inoperative or defective",
+  "393.80":"Rear vision mirror(s) missing or defective",
+  "393.81":"Horn inoperative",
+  "393.82":"Speedometer inoperative",
+  "393.83":"Exhaust system improperly located or leaking under cab",
+  "393.93":"Seat belt missing or defective",
+  "393.65":"Fuel system violations",
+  "393.67":"Fuel tank cap missing or fuel tank leaking"
+},
+"Emergency Equipment": {
+  "393.95(a)":"No or improper fire extinguisher (missing, discharged, unrated)",
+  "393.95(b)":"Fire extinguisher not properly secured or not readily accessible",
+  "393.95(f)":"No or improper warning devices (triangles/flares)"
+},
+"Cargo Securement": {
+  "392.9(a)(1)":"Failing to secure cargo",
+  "392.9(a)(2)":"Failing to secure vehicle equipment",
+  "393.100(a)":"No or improper load securement",
+  "393.104(b)":"Damaged securement system or tiedowns",
+  "393.106(b)":"Cargo not immobilized or secured to prevent shifting",
+  "393.110(b)":"Insufficient number of tiedowns for article length",
+  "393.116":"Improper securement of logs",
+  "393.130":"Improper securement of heavy vehicles, equipment or machinery"
 },
 "Vehicle Identification": {
-  "390.21(b)(1)":"CMV does not display legal/trade name and USDOT number on both sides",
-  "393.19":"Required slow-moving-vehicle marking missing"
+  "390.21(a)":"CMV not marked with legal name and USDOT number",
+  "390.21(b)":"CMV marking improper (size, color, both sides)"
 },
 "Driver Qualification": {
-  "391.11(b)(4)":"Driver not in possession of a valid, properly endorsed CDL",
-  "391.41(a)":"Driver not medically qualified / no current medical certificate",
-  "391.15":"Driver operating a CMV while disqualified"
+  "391.11(b)(2)":"Driver cannot sufficiently read or speak English",
+  "391.11(b)(4)":"Driver not physically qualified",
+  "391.15(a)":"Driving a CMV while disqualified",
+  "391.41(a)":"No medical certificate in driver's possession",
+  "391.45(b)":"Expired medical examiner's certificate"
+},
+"Commercial Driver's License": {
+  "383.23(a)(2)":"Operating a CMV without a valid CDL",
+  "383.51(a)":"Driving a CMV while CDL is suspended/revoked/disqualified",
+  "383.91(a)":"Operating a CMV with improper CDL group/class",
+  "383.93(b)":"No CDL endorsement for vehicle/cargo being operated",
+  "383.95":"Violating CDL restriction"
 },
 "Hours of Service": {
-  "395.8(a)":"Driver failed to maintain a Record of Duty Status (log)",
-  "395.3(a)(2)":"Driver exceeded 11-hour driving limit",
-  "395.3(a)(3)(i)":"Driver exceeded 14-hour on-duty window",
-  "395.8(e)":"False report of driver's record of duty status"
+  "395.3(a)(2)":"Driving beyond 14-hour duty period",
+  "395.3(a)(3)(i)":"Driving beyond 11-hour driving limit",
+  "395.3(a)(3)(ii)":"Driving after 8 hours without a 30-minute break",
+  "395.3(b)":"Driving after 60/70-hour on-duty limit",
+  "395.8(a)":"No record of duty status (RODS) when required",
+  "395.8(e)":"False report of driver's record of duty status",
+  "395.8(f)(1)":"Driver's record of duty status not current",
+  "395.8(k)(2)":"Failing to retain previous 7 days' records of duty status",
+  "395.13(d)":"Driving after being declared out of service",
+  "395.22(h)":"ELD information packet/instructions not onboard"
 },
 "Inspection & Maintenance": {
-  "396.3(a)(1)":"Failure to correct out-of-service defect noted on a prior inspection",
-  "396.17(a)":"No periodic (annual) inspection performed within required interval",
-  "396.13":"Driver failed to perform a pre-trip inspection"
+  "396.3(a)(1)":"Inspection, repair and maintenance of parts and accessories",
+  "396.5(b)":"Oil and/or grease leak",
+  "396.7":"Unsafe operations forbidden",
+  "396.9(c)(2)":"Operating an out-of-service vehicle before repairs",
+  "396.11":"No or improper driver vehicle inspection report (DVIR)",
+  "396.13":"Driver failed to perform a pre-trip inspection",
+  "396.17(c)":"No periodic (annual) inspection within required interval"
 },
-"Cargo & Hazmat": {
-  "392.9(a)":"Cargo not properly secured / load securement violation",
-  "397.19":"Hazardous materials placarding violation"
-},
-"Driving / Other": {
-  "392.2":"Speeding - exceeded posted limit",
+"Driver Conduct & Driving": {
+  "392.2":"Local laws (general) - state/local traffic law violation",
+  "392.2-SLLS2":"State/local laws - speeding 6-10 mph over limit",
+  "392.2-SLLS3":"State/local laws - speeding 11-14 mph over limit",
+  "392.2-SLLS4":"State/local laws - speeding 15+ mph over limit",
+  "392.3":"Operating a CMV while ill or fatigued",
+  "392.4(a)":"Driver uses or is in possession of drugs",
+  "392.5(a)(1)":"Use of alcohol within 4 hours before duty",
+  "392.5(a)(2)":"Possession/use of alcohol while on duty",
+  "392.14":"Failure to use caution for hazardous conditions",
   "392.16":"Failure to use seat belt while operating CMV",
-  "392.14":"Failure to use caution/reduce speed for hazardous road conditions"
+  "392.22(a)":"Failing to use hazard warning flashers when stopped",
+  "392.22(b)":"Failing to place warning devices when stopped",
+  "392.60(a)":"Unauthorized passenger on board CMV",
+  "392.71(a)":"Using or equipping a CMV with a radar detector",
+  "392.80(a)":"Driving while texting",
+  "392.82(a)(1)":"Using a hand-held mobile telephone while driving"
+},
+"Hazardous Materials": {
+  "172.200(a)":"No shipping papers for hazardous materials",
+  "172.504(a)":"Vehicle not placarded as required",
+  "172.602":"No emergency response information",
+  "177.817(e)":"Shipping papers not accessible to driver",
+  "177.834(a)":"Hazardous materials package not secured in vehicle",
+  "397.5":"Hazmat vehicle left unattended (Division 1.1-1.3)"
 }
 };
 const VIO_FLAT = {};
