@@ -95,6 +95,10 @@ input.up{text-transform:uppercase;}
 .grid-tbl select{width:auto;padding:3px 4px;}
 .grid-tbl textarea{min-height:34px;resize:vertical;}
 .grid-tbl tr.oos td{background:#fbeeee;}
+.oos-pill{margin-left:auto;align-self:center;font-size:9.5px;font-weight:700;color:#fff;background:var(--accent);border-radius:3px;padding:1px 5px;letter-spacing:.04em;}
+.code-item .oos-pill + .add{margin-left:6px;}
+.oos-note{font-size:9.5px;color:var(--accent);margin-top:2px;white-space:nowrap;}
+.oos-note.ovr{color:var(--warn);}
 .empty{padding:22px;text-align:center;color:var(--muted);}
 
 /* review */
@@ -608,6 +612,26 @@ function getMake(u){
 }
 
 /* ---------- violations ---------- */
+// Violations that default to Out-of-Service when added. The trooper can still
+// change OOS to N on any row. Add or remove codes here to change the defaults.
+const DEFAULT_OOS = new Set([
+  // Brakes
+  "393.43(d)","393.48(a)",
+  // Tires & wheels
+  "393.75(a)(1)","393.75(a)(2)","393.75(a)(3)","393.75(a)(4)","393.205(a)",
+  // Frame, steering, suspension, coupling, exhaust
+  "393.201(a)","393.209(a)","393.209(b)","393.209(c)","393.207(a)",
+  "393.70(b)","393.70(d)","393.83",
+  // Cargo / hazmat
+  "392.9(a)(1)","177.834(a)","172.200(a)",
+  // Driver qualification & CDL
+  "391.11(b)(2)","391.15(a)","391.41(a)",
+  "383.23(a)(2)","383.51(a)","383.91(a)","383.93(b)",
+  // Hours of service
+  "395.3(a)(2)","395.3(a)(3)(i)","395.3(b)","395.8(a)","395.8(e)","395.13(d)",
+  // Operating OOS vehicle, driver condition
+  "396.9(c)(2)","392.3","392.4(a)","392.5(a)(1)","392.5(a)(2)"
+]);
 function drawCodeList(){
   const q = $('codeSearch').value.trim().toLowerCase();
   let html = '';
@@ -615,12 +639,13 @@ function drawCodeList(){
     const rows = Object.entries(items).filter(([c,d])=>!q || c.toLowerCase().includes(q) || d.toLowerCase().includes(q) || g.toLowerCase().includes(q));
     if(!rows.length) return;
     html += `<div class="code-grp">${esc(g)}</div>` + rows.map(([c,d])=>
-      `<div class="code-item" onclick="addViolation('${c}')"><b>${esc(c)}</b><span>${esc(d)}</span><span class="add">+</span></div>`).join('');
+      `<div class="code-item" onclick="addViolation('${c}')"><b>${esc(c)}</b><span>${esc(d)}</span>${DEFAULT_OOS.has(c)?'<span class="oos-pill" title="Defaults to Out-of-Service">OOS</span>':''}<span class="add">+</span></div>`).join('');
   });
   $('codeList').innerHTML = html || '<div class="empty">No matching codes.</div>';
 }
 function addViolation(code){
-  violations.push({code, unit:"1", oos:"N", type:"F", desc:VIO_FLAT[code].desc});
+  const def = DEFAULT_OOS.has(code);
+  violations.push({code, unit:"1", oos: def ? "Y" : "N", defOOS: def, type:"F", desc:VIO_FLAT[code].desc});
   drawVioTable(); refreshAll();
 }
 function removeViolation(i){ violations.splice(i,1); drawVioTable(); refreshAll(); }
@@ -636,7 +661,7 @@ function drawVioTable(){
     <tr><th>#</th><th>Code</th><th>Unit</th><th>Type</th><th>OOS</th><th style="width:50%;">Description</th><th></th></tr>
     ${violations.map((v,i)=>`<tr class="${v.oos==='Y'?'oos':''}">
       <td>${i+1}</td><td class="code">${esc(v.code)}</td>
-      <td>${sel(i,'unit',['1','2'],v.unit)}</td><td>${sel(i,'type',['F','W'],v.type)}</td><td>${sel(i,'oos',['N','Y'],v.oos)}</td>
+      <td>${sel(i,'unit',['1','2'],v.unit)}</td><td>${sel(i,'type',['F','W'],v.type)}</td><td>${sel(i,'oos',['N','Y'],v.oos)}${v.defOOS ? (v.oos==='Y' ? '<div class="oos-note">default OOS</div>' : '<div class="oos-note ovr">OOS overridden</div>') : ''}</td>
       <td><textarea rows="2" oninput="updateVio(${i},'desc',this.value)">${esc(v.desc)}</textarea></td>
       <td><button class="btn red sm" onclick="removeViolation(${i})">✕</button></td></tr>`).join('')}
   </table>`;
